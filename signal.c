@@ -9,17 +9,21 @@ bool condition = true;
 void handler(int signum)
 { //signal handler
   printf("Hello World!\n");
-  printf("Turing was right!\n");
+  alarm(1); //Schedule a SIGALRM for 1 second
+  
  
 }
 
 int main(int argc, char * argv[])
 {
-  
-  while(condition){
-    signal(SIGALRM,handler); //register handler to handle SIGALRM
-    alarm(1); //Schedule a SIGALRM for 1 second
+  signal(SIGALRM,handler); //register handler to handle SIGALRM
+  alarm(1);
+  while(true){
+    
+
+    
     sleep(1);
+    printf("Turing was right!\n");
     
     
 
