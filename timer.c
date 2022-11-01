@@ -7,32 +7,41 @@
 
 
 int count = 0;
-bool condition = true;
+bool condition = false;
 void handler(int signum)
 { //signal handler
   printf("Hello World!\n");
-  printf("Turing was right!\n");
+  condition = true;
+  
  
 }
 
 void sigintHandler(int sig_num)
 {
-    signal(SIGINT, sigintHandler);
+    // signal(SIGINT, sigintHandler);
     printf("\n  Ctrl+C is clicked \n");
-    printf("\n %d number of alarms delivered\n", count );
-    condition = false;
+    printf("\n %d number of alarms delivered for %d seconds\n", count, count);
+
+    exit(1);
+    
 }
 
 int main(int argc, char * argv[])
 {
-  
-  while(condition){
+  signal(SIGALRM,handler); //register handler to handle SIGALRM
+  signal(SIGINT, sigintHandler);
+  alarm(1);
+  while(true){
+    if (condition){
+      printf("Turing was right!\n");
+      condition = false;
+      alarm(1); //Schedule a SIGALRM for 1 second
+      count += 1;
+
+    }
     
-    signal(SIGALRM,handler); //register handler to handle SIGALRM
-    alarm(1); //Schedule a SIGALRM for 1 second
-    sleep(1);
-    signal(SIGINT, sigintHandler);
-    count += 1;
+    
+    
     
     
 
